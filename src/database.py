@@ -9,6 +9,7 @@ class DatabaseManager:
         Args:
             db_path (str): the sqlite database path
         """
+        self.path = db_path
         self.connection = sqlite3.connect(db_path)
         
     def length(self, table_name):
@@ -31,15 +32,19 @@ class DatabaseManager:
     
     def check_password(self, table_name, username_column, password_column, username_val, password_val) -> int:
         """
-        check username and password
-        note: password must be hashed before passing in
+        Check username and password
+        Note: password must be hashed before passing in
 
         Returns:
-            bool: if valid
+            int: if valid return student id, else return -1
         """
         cursor = self.connection.cursor()
-        cursor.execute(f"SELECT id FROM ? WHERE ? = ? and ? = ?", (table_name, username_column, username_val, password_column, password_val))
-        return cursor.fetchone() is not None
+        
+        query = f"SELECT id FROM {table_name} WHERE {username_column} = ? AND {password_column} = ?"
+        cursor.execute(query, (username_val, password_val))
+        result = cursor.fetchone()
+        
+        return result[0] if result else -1
     
     def insert_record(self, table_name, columns: list[str], values: list[str]):
         cursor = self.connection.cursor()

@@ -18,6 +18,9 @@ def load_db_config() -> dict[str, str]:
     InitializeInfo.questions_db_path = db_config.get("questions_db_path", "data/questions.sqlite3")
     InitializeInfo.students_db_path = db_config.get("students_db_path", "data/students.sqlite3")
     
+    InitializeInfo.question_db = DatabaseManager(InitializeInfo.questions_db_path)
+    InitializeInfo.student_db = DatabaseManager(InitializeInfo.students_db_path)
+    
     return {
         "questions_db_path": db_config.get("questions_db_path", "data/questions.sqlite3"),
         "students_db_path": db_config.get("students_db_path", "data/students.sqlite3"),

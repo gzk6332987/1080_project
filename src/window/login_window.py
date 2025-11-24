@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                              QMessageBox, QCheckBox, QFrame)
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QFont, QIcon
-from ..initialize import InitializeInfo
+from initialize import InitializeInfo
 import hashlib
 
 
@@ -218,9 +218,9 @@ class LoginWindow(QMainWindow):
             return
         
         # TODO Simulate authentication (replace with real authentication)
-        if self.authenticate(username, password):
+        if user_id := self.authenticate(username, password) != -1:
             self.show_message('Success', f'Welcome, {username}!', QMessageBox.Information)
-            self.login_success.emit(())
+            self.login_success.emit(user_id, username)
         else:
             self.show_message('Error', 'Invalid username or password')
             self.password_input.clear()

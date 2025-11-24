@@ -9,6 +9,8 @@ class QuizWindow(QMainWindow):
         self.setGeometry(200, 200, 500, 300)
         self.initUI()
         
+        self.check_callback: callable[[str], int] = None  # Callback function to verify answers
+        
         self.correct_answer = ""
     
     def initUI(self):
@@ -74,12 +76,9 @@ class QuizWindow(QMainWindow):
         
         central_widget.setLayout(layout)
     
-    def button_clicked(self, check_callback: callable[[str], int]):
+    def button_clicked(self):
         """
         verify the inputed answer use callback function
-        
-        Args:
-            check_callback (callable[[str], int]): a callback function to verify the answer. If wrong, return 0; if correct, return score (>0)
         """
         user_answer = self.answer_input.text().strip()
         if user_answer:

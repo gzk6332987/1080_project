@@ -27,5 +27,11 @@ def main():
     
 
 if __name__ == "__main__":
-    main()
+    # main()
+    load_db_config()
+    
+    from window.application_controller import ApplicationController
+    controller = ApplicationController()
+    controller.run()
+    
     
