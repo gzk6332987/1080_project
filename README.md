@@ -8,6 +8,8 @@
 
 ### If you don't want to rely on **virtual environment**, please run `pip install -r requirements.txt` to install librarys in system (NOT RECOMMAND)
 
+### Python version must be 3.11+, there are some lib only exist in these version
+
 <br>
 <br>
 

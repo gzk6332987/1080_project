@@ -1,0 +1,6 @@
+[database]
+questions_db_path = "data/questions.sqlite3"
+students_db_path = "data/students.sqlite3"
+
+
+
