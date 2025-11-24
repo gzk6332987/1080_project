@@ -29,7 +29,19 @@ class DatabaseManager:
         record = cursor.fetchone()
         return record
     
-    def insert_record(self, table_name, columns: [str, ...], values: [str, ...]):
+    def check_password(self, table_name, username_column, password_column, username_val, password_val) -> int:
+        """
+        check username and password
+        note: password must be hashed before passing in
+
+        Returns:
+            bool: if valid
+        """
+        cursor = self.connection.cursor()
+        cursor.execute(f"SELECT id FROM ? WHERE ? = ? and ? = ?", (table_name, username_column, username_val, password_column, password_val))
+        return cursor.fetchone() is not None
+    
+    def insert_record(self, table_name, columns: list[str], values: list[str]):
         cursor = self.connection.cursor()
         placeholders = ', '.join('?' * len(values))
         columns_formatted = ', '.join(columns)

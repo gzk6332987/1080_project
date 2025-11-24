@@ -1,6 +1,6 @@
 from initialize import load_db_config
 from database import DatabaseManager
-from main_window import QuizWindow
+from window.quiz_window import QuizWindow
 from PyQt5.QtWidgets import QApplication
 import sys
 

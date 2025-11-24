@@ -8,6 +8,8 @@ class QuizWindow(QMainWindow):
         self.setWindowTitle("Simple Quiz App")
         self.setGeometry(200, 200, 500, 300)
         self.initUI()
+        
+        self.correct_answer = ""
     
     def initUI(self):
         # Create central widget
@@ -72,7 +74,13 @@ class QuizWindow(QMainWindow):
         
         central_widget.setLayout(layout)
     
-    def button_clicked(self):
+    def button_clicked(self, check_callback: callable[[str], int]):
+        """
+        verify the inputed answer use callback function
+        
+        Args:
+            check_callback (callable[[str], int]): a callback function to verify the answer. If wrong, return 0; if correct, return score (>0)
+        """
         user_answer = self.answer_input.text().strip()
         if user_answer:
             QMessageBox.information(self, "Answer Submitted", 
@@ -83,12 +91,13 @@ class QuizWindow(QMainWindow):
         # TODO return the answer to the controller for validation
     
     def show_correct_answer(self):
-        correct_answer = "Paris"
+        correct_answer = self.correct_answer
         QMessageBox.information(self, "Correct Answer", 
                               f"The correct answer is: {correct_answer}")
         
     def update(self, quesion: str, answer: str):
         self.answer_input.setText("")  # empty the answer input field
+        self.correct_answer = answer
         self.question_label.setText(quesion)
         
 
