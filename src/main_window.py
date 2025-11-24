@@ -61,7 +61,7 @@ class QuizWindow(QMainWindow):
         """)
         
         # Connect buttons to functions
-        self.submit_button.clicked.connect(self.check_answer)
+        self.submit_button.clicked.connect(self.button_clicked)
         self.show_answer_button.clicked.connect(self.show_correct_answer)
         
         # Add widgets to layout
@@ -72,13 +72,15 @@ class QuizWindow(QMainWindow):
         
         central_widget.setLayout(layout)
     
-    def check_answer(self):
+    def button_clicked(self):
         user_answer = self.answer_input.text().strip()
         if user_answer:
             QMessageBox.information(self, "Answer Submitted", 
                                   f"You answered: {user_answer}\n\nClick 'Show Correct Answer' to see the correct answer!")
         else:
             QMessageBox.warning(self, "No Answer", "Please enter an answer first!")
+            
+        # TODO return the answer to the controller for validation
     
     def show_correct_answer(self):
         correct_answer = "Paris"
@@ -86,11 +88,14 @@ class QuizWindow(QMainWindow):
                               f"The correct answer is: {correct_answer}")
         
     def update(self, quesion: str, answer: str):
+        self.answer_input.setText("")  # empty the answer input field
         self.question_label.setText(quesion)
         
 
 
-def main():
+if __name__ == "__main__":
+    # This is just a TEST!!!
+    
     app = QApplication(sys.argv)
     
     # Set application style
@@ -100,6 +105,3 @@ def main():
     window.show()
     
     sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    main()
