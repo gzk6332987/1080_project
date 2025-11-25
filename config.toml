@@ -2,5 +2,6 @@
 questions_db_path = "data/questions/questions.sqlite3"
 students_db_path = "data/students/students.sqlite3"
 
-
+[review_setting]
+default_mistake_count = 3
 

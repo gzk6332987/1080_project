@@ -46,12 +46,27 @@ class DatabaseManager:
         
         return result[0] if result else -1
     
-    def insert_record(self, table_name, columns: list[str], values: list[str]):
+    def insert_record(self, table_name: str, columns: list[str], values: list[str]):
         cursor = self.connection.cursor()
         placeholders = ', '.join('?' * len(values))
         columns_formatted = ', '.join(columns)
         cursor.execute(f"INSERT INTO {table_name} ({columns_formatted}) VALUES ({placeholders})", values)
         self.connection.commit()
+        
+    def query_all(self, table_name: str):
+        cursor = self.connection.cursor()
+        len = cursor.execute(f"SELECT * FROM {table_name};")
+        return cursor.fetchall()
+    
+    def check_table_exist(self, table_name):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (table_name,))
+        result = cursor.fetchone()
+        return result is not None
+        
+    def run_custom_command(self, command: str, arguments: (str)):
+        cursor = self.connection.cursor()
+        return cursor.execute(command, arguments)
     
     def __del__(self):
         self.connection.close()

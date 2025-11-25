@@ -1,4 +1,4 @@
-from initialize import load_db_config
+from initialize import load_config
 from database import DatabaseManager
 from window.quiz_window import QuizWindow
 from PyQt5.QtWidgets import QApplication
@@ -8,7 +8,7 @@ import sys
 def main():
     # Initalize database connection
     try:
-        db_info = load_db_config()
+        db_info = load_config()
         q_db_path = db_info.get("questions_db_path")
         s_db_path = db_info.get("students_db_path")
         question_db = DatabaseManager(q_db_path)
@@ -28,7 +28,7 @@ def main():
 
 if __name__ == "__main__":
     # main()
-    load_db_config()
+    load_config()
     
     from window.application_controller import ApplicationController
     controller = ApplicationController()
