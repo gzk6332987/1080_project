@@ -1,6 +1,10 @@
 import sys
+import random
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QLabel, QLineEdit, QPushButton, QMessageBox)
+
+from ..initialize import InitializeInfo
+from ..student import Student
 
 class QuizWindow(QMainWindow):
     def __init__(self):
@@ -10,8 +14,11 @@ class QuizWindow(QMainWindow):
         self.initUI()
         
         self.check_callback: callable[[str], int] = None  # Callback function to verify answers
-        
+        self.student: Student = None
         self.correct_answer = ""
+        
+    def set_student(self, student: Student):
+        self.student = student
     
     def initUI(self):
         # Create central widget
@@ -66,7 +73,7 @@ class QuizWindow(QMainWindow):
         
         # Connect buttons to functions
         self.submit_button.clicked.connect(self.button_clicked)
-        self.show_answer_button.clicked.connect(self.show_correct_answer)
+        self.show_answer_button.clicked.connect(self.next_question)
         
         # Add widgets to layout
         layout.addWidget(self.question_label)
@@ -89,7 +96,19 @@ class QuizWindow(QMainWindow):
             
         # TODO return the answer to the controller for validation
     
-    def show_correct_answer(self):
+    def next_question(self):
+        if self.student is None:
+            raise AttributeError("self.student equal to None, this is not allowed.")
+        review_factor = InitializeInfo.review_factor
+        random_num = random.random()
+        if random_num > review_factor:
+            # normal generate
+            (question, answer) = self.student.generate_quiz_from_level()
+        else:
+            # get from database if have, if not, still generate normal
+            # TODO the method should return a result 
+            self.student.generate_quiz_from_db(InitializeInfo.student_db)
+        
         correct_answer = self.correct_answer
         QMessageBox.information(self, "Correct Answer", 
                               f"The correct answer is: {correct_answer}")
