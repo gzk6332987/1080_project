@@ -48,7 +48,7 @@ class QuizWindow(QMainWindow):
         """)
         
         # Show answer button
-        self.show_answer_button = QPushButton("Show Correct Answer")
+        self.show_answer_button = QPushButton("Next question")
         self.show_answer_button.setStyleSheet("""
             QPushButton {
                 background-color: #008CBA;

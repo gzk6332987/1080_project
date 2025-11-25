@@ -2,7 +2,15 @@
 
 echo -e "\033[32mActivating virtual environment...\033[0m"
 
+python3 -m pip install virtualenv
+
+virtualenv venv
+
 source venv/bin/activate
+
+pip3 install -r requirements.txt
+
+
 
 if [ $? -ne 0 ]; then
     echo -e "\033[31mFailed to activate virtual environment.\033[0m"

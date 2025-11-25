@@ -6,8 +6,6 @@
 
 ### For mac and linux user, please run `run.sh`
 
-### If you don't want to rely on **virtual environment**, please run `pip install -r requirements.txt` to install librarys in system (NOT RECOMMAND)
-
 ### Python version must be 3.11+, there are some lib only exist in these version
 
 <br>
@@ -35,11 +33,11 @@ When you run `run.sh`, `run.ps1`, or `run.sh`, it will automatically active virt
 
 ### *Spotlight*
 
-We seperate each part through class, each part could run independently, make it easier to develop and debug!  (: 
+We seperate each part through class, each part could maintain independently, make it easier to develop and debug!  (: 
 
 
 ### Additional info
 
-You can use `git log --oneline --time --graph --all` show each commit and progress (:
+You can use `git log --oneline --graph --all` show each commit and progress (:
 
 You can use `git tag` show each version of our project (If you want, you can try each version, but not all success due to database structure problem) (:

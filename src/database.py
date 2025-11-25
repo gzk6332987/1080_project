@@ -64,9 +64,12 @@ class DatabaseManager:
         result = cursor.fetchone()
         return result is not None
         
-    def run_custom_command(self, command: str, arguments: (str)):
+    def run_custom_command(self, command: str, arguments: (str) = (), should_commit: bool = True):
         cursor = self.connection.cursor()
-        return cursor.execute(command, arguments)
+        result = cursor.execute(command, arguments)
+        if should_commit:
+            self.connection.commit()
+        return result
     
     def __del__(self):
         self.connection.close()

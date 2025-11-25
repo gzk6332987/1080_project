@@ -1,15 +1,26 @@
 @echo off
-echo [32mActivating virtual environment...[0m
+chcp 65001 >nul
+
+echo Activating virtual environment...
+
+python -m pip install virtualenv
+
+python -m virtualenv venv
 
 call venv\Scripts\activate.bat
 
+pip install -r requirements.txt
+
 if errorlevel 1 (
-    echo [31mFailed to activate virtual environment.[0m
+    echo Failed to activate virtual environment.
     exit /b 1
 )
 
-echo [32mVirtual environment activated successfully![0m
+echo Virtual environment activated successfully!
 
 timeout /t 1 /nobreak >nul
-REM Now run your Python script
+
+:: Now run your Python script
 python src\main.py
+
+pause

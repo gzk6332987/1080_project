@@ -4,4 +4,13 @@ students_db_path = "data/students/students.sqlite3"
 
 [review_setting]
 default_mistake_count = 3
+# This means the opportunity review history question
+review_factor = 0.3
 
+[score_setting]
+default_score = 200
+max_score = 500
+level_gap = 50
+question_score = 1
+# Up to this score, system will give some difficult question
+high_level_score = 350

@@ -8,18 +8,18 @@ from database import DatabaseManager
 class StudentBuilder:
     def __init__(self):
         self.name = "no name"
-        self.age = 0
+        self.id = 0
 
     def set_name(self, name):
         self.name = name
         return self
-
-    def set_age(self, age):
-        self.age = age
+    
+    def set_id(self, id):
+        self.id = id
         return self
 
-    def build(self):
-        return Student(self.name, self.age)
+    def build(self, students_database: DatabaseManager):
+        return Student(students_database, self.id, self.name)
     
     # Or load from database
     def from_db_record(self, database: DatabaseManager, student_id: int):
@@ -30,24 +30,22 @@ class StudentBuilder:
 
 
 class Student:
-    def __init__(self, question_db: DatabaseManager, id, username, age):
+    def __init__(self, question_db: DatabaseManager, id: int, username: str):
         self.id = id
         self.username = username
-        self.age = age
         # Init this student question database if not
         # - check exist
         # - insert record
         if not question_db.check_table_exist(str(id)):
             question_db.run_custom_command(f"""
-                                            CREATE TABLE "{id}" (
-                                                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                                question TEXT NOT NULL,
-                                                answer TEXT NOT NULL,
-                                                mistake_count INTEGER DEFAULT (0),
-                                                CONSTRAINT "{id}_PK" PRIMARY KEY (id)
-                                            );
-                                           """)
-         
+                CREATE TABLE "{id}" (
+                    id INTEGER PRIMARY KEY,
+                    question TEXT NOT NULL,
+                    answer TEXT NOT NULL,
+                    mistake_count INTEGER DEFAULT 0
+                );
+            """.strip())
+                    
 
     def get_info(self):
         return f"Name: {self.username}, Age: {self.age}"
