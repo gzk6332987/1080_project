@@ -16,8 +16,6 @@ class InitializeInfo:
     level_gap: int
     question_score: int
     high_level_score: int
-    
-    
 
 
 def load_config():
@@ -36,12 +34,9 @@ def load_config():
     InitializeInfo.default_mistake_count = int(review_setting.get("default_mistake_count"))
     InitializeInfo.review_factor = float(review_setting.get("review_factor"))
     
-    score_setting = int(config_raw.get("score_setting", {}))
+    score_setting = config_raw.get("score_setting", {})
     InitializeInfo.default_score = int(score_setting.get("default_score"))
     InitializeInfo.max_score = int(score_setting.get("max_score"))
     InitializeInfo.level_gap = int(score_setting.get("level_gap"))
     InitializeInfo.question_score = int(score_setting.get("question_score"))
     InitializeInfo.high_level_score = int(score_setting.get("high_level_score"))
-    
-    
-    

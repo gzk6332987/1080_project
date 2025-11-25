@@ -4,7 +4,7 @@ from database import DatabaseManager
 from problem_generator import ProblemGenerator
 from database import DatabaseManager
 from initialize import InitializeInfo
-
+import random
 
 class StudentBuilder:
     def __init__(self):
@@ -24,7 +24,7 @@ class StudentBuilder:
         self.score = score
 
     def build(self, students_database: DatabaseManager):
-        return Student(students_database, self.id, self.name)
+        return Student(students_database, self.id, self.name, self.score)
     
     # Or load from database
     def from_db_record(self, database: DatabaseManager, student_id: int):
@@ -64,7 +64,7 @@ class Student:
     def get_level(self) -> int:
         return self._level
     
-    def generate_quiz_from_level(self, type: str) -> Tuple[int, str, int | float | str]:
+    def generate_quiz_from_level(self) -> Tuple[int, str, int | float | str]:
         """
         generate a random question from specific level
 
@@ -75,11 +75,44 @@ class Student:
         Return:
             Tuple[int, str, int | float | str]: first is question index , second is question, third is answer
         """ 
+        random_number = random.random()
         generator = ProblemGenerator()
+        
+        if self._level <= 3:
+            generator.generate_problem(self._level, "basic")
+        elif self._level <= 5:
+            if random_number < 0.5:
+                generator.generate_problem(self._level, "basic")
+            else:
+                generator.generate_problem(self._level, "fraction")
+        elif self._level <= 7:
+            if random_number < 0.33:
+                generator.generate_problem(self._level, "fraction")
+            elif random_number < 0.66:
+                generator.generate_problem(self._level, "polynomial")
+            else:
+                generator.generate_problem(self._level, "algebra")
+        elif self._level <= 9:
+            if random_number < 0.20:
+                generator.generate_problem(self._level, "fraction")
+            elif random_number < 0.50:
+                generator.generate_problem(self._level, "polynomial")
+            elif random_number < 0.75:
+                generator.generate_problem(self._level, "algebra")
+            else:
+                generator.generate_problem(self._level, "calculus")
+        else:
+            if random_number < 0.33:
+                generator.generate_problem(self._level, "polynomial")
+            elif random_number < 0.66:
+                generator.generate_problem(self._level, "algebra")
+            else:
+                generator.generate_problem(self._level, "calculus")
+            
         return generator.generate_problem(self._level, type)
     
     def generate_quiz_from_db(self, question_db: DatabaseManager) -> Tuple[str, int | float | str]:
-        history_questions = question_db.query_all()
+        history_questions = question_db.query_all(str(self.id))
         history_questions.sort()
         # TODO
         

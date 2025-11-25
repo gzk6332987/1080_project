@@ -5,11 +5,12 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QFont, QIcon
 from initialize import InitializeInfo
+from student import StudentBuilder, Student
 import hashlib
 
 
 class LoginWindow(QMainWindow):
-    login_success = pyqtSignal((int, str))  # Signal emitted on successful login
+    login_success = pyqtSignal(Student)  # Signal emitted on successful login
     
     def __init__(self, ):
         super().__init__()
@@ -217,10 +218,14 @@ class LoginWindow(QMainWindow):
             self.show_message('Error', 'Please fill in all fields')
             return
         
-        # TODO Simulate authentication (replace with real authentication)
         if user_id := self.authenticate(username, password) != -1:
             self.show_message('Success', f'Welcome, {username}!', QMessageBox.Information)
-            self.login_success.emit(user_id, username)
+            # Construct student
+            student = StudentBuilder()\
+                .set_id(user_id)\
+                .set_name(username)\
+                .build(InitializeInfo.student_db)
+            self.login_success.emit(student)
         else:
             self.show_message('Error', 'Invalid username or password')
             self.password_input.clear()

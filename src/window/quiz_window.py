@@ -3,8 +3,9 @@ import random
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QLabel, QLineEdit, QPushButton, QMessageBox)
 
-from ..initialize import InitializeInfo
-from ..student import Student
+from initialize import InitializeInfo
+from student import Student
+
 
 class QuizWindow(QMainWindow):
     def __init__(self):
@@ -101,24 +102,22 @@ class QuizWindow(QMainWindow):
             raise AttributeError("self.student equal to None, this is not allowed.")
         review_factor = InitializeInfo.review_factor
         random_num = random.random()
+        
         if random_num > review_factor:
             # normal generate
             (question, answer) = self.student.generate_quiz_from_level()
         else:
             # get from database if have, if not, still generate normal
             # TODO the method should return a result 
-            self.student.generate_quiz_from_db(InitializeInfo.student_db)
+            (id, question, answer) = self.student.generate_quiz_from_db(InitializeInfo.student_db)
         
-        correct_answer = self.correct_answer
-        QMessageBox.information(self, "Correct Answer", 
-                              f"The correct answer is: {correct_answer}")
+        self.update(question, answer)
         
     def update(self, quesion: str, answer: str):
         self.answer_input.setText("")  # empty the answer input field
         self.correct_answer = answer
         self.question_label.setText(quesion)
         
-
 
 if __name__ == "__main__":
     # This is just a TEST!!!

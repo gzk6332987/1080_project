@@ -1,6 +1,7 @@
 from .login_window import LoginWindow
 from .quiz_window import QuizWindow
 from PyQt5.QtWidgets import QApplication
+from student import Student
 import sys
 
 
@@ -15,7 +16,8 @@ class ApplicationController:
     def show_login(self):
         self.login_window.show()
         
-    def show_quiz_window(self, user_id: int):
+    def show_quiz_window(self, student: Student):
+        self.quiz_window.set_student(student)
         self.quiz_window.show()
         if self.login_window.isVisible():
             self.login_window.close()
