@@ -40,3 +40,4 @@ def load_config():
     InitializeInfo.level_gap = int(score_setting.get("level_gap"))
     InitializeInfo.question_score = int(score_setting.get("question_score"))
     InitializeInfo.high_level_score = int(score_setting.get("high_level_score"))
+    InitializeInfo.wrong_answer_deduct = int(score_setting.get("wrong_answer_deduct"))

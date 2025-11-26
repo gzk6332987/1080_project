@@ -44,7 +44,10 @@ class DatabaseManager:
         cursor.execute(query, (username_val, password_val))
         result = cursor.fetchone()
         
-        return result[0] if result else -1
+        if result:
+            return result[0]
+        else:
+            return -1
     
     def insert_record(self, table_name: str, columns: list[str], values: list[str]):
         cursor = self.connection.cursor()
@@ -52,19 +55,26 @@ class DatabaseManager:
         columns_formatted = ', '.join(columns)
         cursor.execute(f"INSERT INTO {table_name} ({columns_formatted}) VALUES ({placeholders})", values)
         self.connection.commit()
-        
-    def query_all(self, table_name: str):
-        cursor = self.connection.cursor()
-        len = cursor.execute(f"SELECT * FROM {table_name};")
-        return cursor.fetchall()
-    
+            
+    def query_all(self, table_name):
+        """Query all data from a table"""
+        try:
+            cursor = self.connection.cursor()
+            # Remove the ? placeholder and use string formatting directly
+            cursor.execute(f"SELECT * FROM \"{table_name}\"")
+            rows = cursor.fetchall()
+            return rows
+        except sqlite3.Error as e:
+            print(f"Database error: {e}")
+            return None
+
     def check_table_exist(self, table_name):
         cursor = self.connection.cursor()
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (table_name,))
         result = cursor.fetchone()
         return result is not None
         
-    def run_custom_command(self, command: str, arguments: (str) = (), should_commit: bool = True):
+    def execute_custom_command(self, command: str, arguments: (str) = (), should_commit: bool = True):
         cursor = self.connection.cursor()
         result = cursor.execute(command, arguments)
         if should_commit:

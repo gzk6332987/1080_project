@@ -218,7 +218,8 @@ class LoginWindow(QMainWindow):
             self.show_message('Error', 'Please fill in all fields')
             return
         
-        if user_id := self.authenticate(username, password) != -1:
+        user_id = self.authenticate(username, password)
+        if user_id != -1:
             self.show_message('Success', f'Welcome, {username}!', QMessageBox.Information)
             # Construct student
             student = StudentBuilder()\

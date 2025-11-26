@@ -48,7 +48,7 @@ class Student:
         # - check exist
         # - insert record
         if not question_db.check_table_exist(str(id)):
-            question_db.run_custom_command(f"""
+            question_db.execute_custom_command(f"""
                 CREATE TABLE "{id}" (
                     id INTEGER PRIMARY KEY,
                     question TEXT NOT NULL,
@@ -113,8 +113,10 @@ class Student:
     
     def generate_quiz_from_db(self, question_db: DatabaseManager) -> Tuple[str, int | float | str]:
         history_questions = question_db.query_all(str(self.id))
-        history_questions.sort()
-        # TODO
+        # sorted_history_questions = sorted(history_questions, key=lambda x: x[-1])
+        probability_weights = [question[-1] for question in history_questions]
+        result = random.choices(history_questions, probability_weights)[0]
+        return (result[0], result[1], result[2])
         
     def insert_question_to_db(self, database: DatabaseManager, question: str, answer: int | float| str):
         database.insert_record(str(self.id), ["question", "answer", "mistake_count"])
@@ -125,6 +127,15 @@ class Student:
         self.score = min(self.score, InitializeInfo.max_score)
         
         self._level = self.score // InitializeInfo.level_gap
+    
+    def update_to_db(self, student_db: DatabaseManager):
+        student_db.execute_custom_command(
+            """
+            UPDATE students SET score = ? WHERE id = ?
+            """.strip(),
+            (self.score, self.id),
+            should_commit=True
+        )
         
 
     

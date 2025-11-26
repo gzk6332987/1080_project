@@ -89,13 +89,28 @@ class QuizWindow(QMainWindow):
         verify the inputed answer use callback function
         """
         user_answer = self.answer_input.text().strip()
-        if user_answer:
-            QMessageBox.information(self, "Answer Submitted", 
-                                  f"You answered: {user_answer}\n\nClick 'Show Correct Answer' to see the correct answer!")
-        else:
+        if not user_answer:
             QMessageBox.warning(self, "No Answer", "Please enter an answer first!")
+            return
             
-        # TODO return the answer to the controller for validation
+        if answer_checker(user_answer, self.correct_answer):
+            # get score
+            increase_score = InitializeInfo.question_score
+            self.student.relative_modify_score(increase_score)
+            self.student.update_to_db(InitializeInfo.student_db)
+            score = self.student.score
+            level = self.student.get_level()
+            QMessageBox.information(self, "Nice", f"Good job, your score is {score} now! (level: {level})")
+        else:
+            decrease_score = InitializeInfo.wrong_answer_deduct
+            self.student.relative_modify_score(-decrease_score)
+            self.student.update_to_db(InitializeInfo.student_db)
+            score = self.student.score
+            level = self.student.get_level()
+            # TODO log into database
+            QMessageBox.information(self, "Wrong", f"Wrong answer! your score is {score} now! (level: {level})")
+        self.next_question()
+            
     
     def next_question(self):
         if self.student is None:
@@ -108,7 +123,6 @@ class QuizWindow(QMainWindow):
             (question, answer) = self.student.generate_quiz_from_level()
         else:
             # get from database if have, if not, still generate normal
-            # TODO the method should return a result 
             (id, question, answer) = self.student.generate_quiz_from_db(InitializeInfo.student_db)
         
         self.update(question, answer)
@@ -117,7 +131,9 @@ class QuizWindow(QMainWindow):
         self.answer_input.setText("")  # empty the answer input field
         self.correct_answer = answer
         self.question_label.setText(quesion)
-        
+
+def answer_checker(answer, correct) -> bool:
+    return str(answer) == str(correct)
 
 if __name__ == "__main__":
     # This is just a TEST!!!

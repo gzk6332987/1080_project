@@ -14,3 +14,4 @@ level_gap = 50
 question_score = 1
 # Up to this score, system will give some difficult question
 high_level_score = 350
+wrong_answer_deduct = 3
