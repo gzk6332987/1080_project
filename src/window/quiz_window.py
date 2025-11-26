@@ -100,6 +100,8 @@ class QuizWindow(QMainWindow):
             self.student.update_to_db(InitializeInfo.student_db)
             score = self.student.score
             level = self.student.get_level()
+            # TODO log to database
+            # ...
             QMessageBox.information(self, "Nice", f"Good job, your score is {score} now! (level: {level})")
         else:
             decrease_score = InitializeInfo.wrong_answer_deduct
@@ -107,7 +109,8 @@ class QuizWindow(QMainWindow):
             self.student.update_to_db(InitializeInfo.student_db)
             score = self.student.score
             level = self.student.get_level()
-            # TODO log into database
+            # log into database
+            self.student.modify_wrong_question_to_db(self.question_label.text(), self.correct_answer, InitializeInfo.student_db, 1)
             QMessageBox.information(self, "Wrong", f"Wrong answer! your score is {score} now! (level: {level})")
         self.next_question()
             

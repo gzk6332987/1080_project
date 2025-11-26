@@ -225,6 +225,7 @@ class LoginWindow(QMainWindow):
             student = StudentBuilder()\
                 .set_id(user_id)\
                 .set_name(username)\
+                .set_score_from_db(InitializeInfo.student_db)\
                 .build(InitializeInfo.student_db)
             self.login_success.emit(student)
         else:

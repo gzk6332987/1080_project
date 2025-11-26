@@ -22,6 +22,16 @@ class StudentBuilder:
     
     def set_score(self, score: int):
         self.score = score
+    
+    def set_score_from_db(self, student_db: DatabaseManager):
+        score = student_db.execute_custom_command(
+            """
+            select score from students where id = ?
+            """.strip(),
+            (self.id,)
+        ).fetchone()[0]
+        self.score = score
+        return self
 
     def build(self, students_database: DatabaseManager):
         return Student(students_database, self.id, self.name, self.score)
@@ -136,7 +146,40 @@ class Student:
             (self.score, self.id),
             should_commit=True
         )
-        
-
     
+    def modify_wrong_question_to_db(self, question_description: str, correct_answer: str | None, student_db: DatabaseManager, mistake: int):
+        """
+        TODO
+        Modify mistake count in database, if no this record, create one and set mistake count
+
+        Args:
+            student_db (DatabaseManager): The student database manager object
+            mistake (int): the abstract value want to apply in database
+        """
+        # - check exist
+        if student_db.execute_custom_command(
+            f"""
+            select id from "{self.id}" where question = ?
+            """
+            .strip(),
+            (question_description, ),
+            False
+        ).fetchone() is None:
+            if correct_answer is None:
+                raise ValueError("Parameter `correct_answer` must null")
+            # create
+            student_db.execute_custom_command(
+                f"""
+                insert into "{self.id}" (question, answer, mistake_count) values (?, ?, ?) 
+                """.strip(),
+                (question_description, correct_answer, InitializeInfo.default_mistake_count + mistake)
+            )
+        else:
+            # This means the record exist, just update mistake count
+            student_db.execute_custom_command(
+                f"""
+                update "{self.id}" SET mistake_count = mistake_count + ?
+                """.strip(),
+                (mistake, )
+            )
     
