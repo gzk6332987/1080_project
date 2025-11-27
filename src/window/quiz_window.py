@@ -20,6 +20,8 @@ class QuizWindow(QMainWindow):
         
     def set_student(self, student: Student):
         self.student = student
+        # refresh score/level display when a student is set
+        self.refresh_status()
     
     def init_ui(self):
         # Create central widget
@@ -29,6 +31,12 @@ class QuizWindow(QMainWindow):
         # Create layout
         layout = QVBoxLayout()
         
+        # Score and Level labels
+        self.score_level_label = QLabel("Score: 0 | Level: 0")
+        self.score_level_label.setStyleSheet("font-size: 14px; margin: 6px;")
+
+
+
         # Question label (Update it later...)
         self.question_label = QLabel("Sorry, we don't have questions available at the moment ):")
         self.question_label.setStyleSheet("font-size: 16px; font-weight: bold; margin: 10px;")
@@ -37,7 +45,7 @@ class QuizWindow(QMainWindow):
         self.answer_input = QLineEdit()
         self.answer_input.setPlaceholderText("Enter your answer here...")
         self.answer_input.setStyleSheet("padding: 8px; font-size: 14px; margin: 10px;")
-        
+    
         # Submit button
         self.submit_button = QPushButton("Check Answer")
         self.submit_button.setStyleSheet("""
@@ -76,12 +84,12 @@ class QuizWindow(QMainWindow):
         self.submit_button.clicked.connect(self.button_clicked)
         self.show_answer_button.clicked.connect(self.next_question)
         
-        # Add widgets to layout
+        
         layout.addWidget(self.question_label)
         layout.addWidget(self.answer_input)
         layout.addWidget(self.submit_button)
         layout.addWidget(self.show_answer_button)
-        
+        layout.addWidget(self.score_level_label)
         central_widget.setLayout(layout)
     
     def button_clicked(self):
@@ -102,6 +110,8 @@ class QuizWindow(QMainWindow):
             level = self.student.get_level()
             # TODO log to database
             self.student.modify_wrong_question_to_db(self.question_label.text(), self.correct_answer, InitializeInfo.student_db, -1)
+            # refresh UI status
+            self.refresh_status()
             QMessageBox.information(self, "Nice", f"Good job, your score is {score} now! (level: {level})")
         else:
             decrease_score = InitializeInfo.wrong_answer_deduct
@@ -111,6 +121,8 @@ class QuizWindow(QMainWindow):
             level = self.student.get_level()
             # log into database
             self.student.modify_wrong_question_to_db(self.question_label.text(), self.correct_answer, InitializeInfo.student_db, 1)
+            # refresh UI status
+            self.refresh_status()
             QMessageBox.information(self, "Wrong", f"Wrong answer! your score is {score} now! (level: {level})")
         self.next_question()
             
@@ -134,6 +146,22 @@ class QuizWindow(QMainWindow):
         self.answer_input.setText("")  # empty the answer input field
         self.correct_answer = answer
         self.question_label.setText(quesion)
+        # also refresh status in case level/score changed
+        self.refresh_status()
+
+    def refresh_status(self):
+        """Update the on-screen score and level labels from the current student."""
+        if self.student is None:
+            return
+        try:
+            score = getattr(self.student, 'score', 0)
+        except Exception:
+            score = 0
+        try:
+            level = self.student.get_level()
+        except Exception:
+            level = 0
+        self.score_level_label.setText(f"Score: {score} | Level: {level}")
 
 def answer_checker(answer, correct) -> bool:
     return str(answer) == str(correct)
