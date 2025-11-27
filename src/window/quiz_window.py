@@ -12,7 +12,7 @@ class QuizWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Simple Quiz App")
         self.setGeometry(200, 200, 500, 300)
-        self.initUI()
+        self.init_ui()
         
         self.check_callback: callable[[str], int] = None  # Callback function to verify answers
         self.student: Student = None
@@ -21,7 +21,7 @@ class QuizWindow(QMainWindow):
     def set_student(self, student: Student):
         self.student = student
     
-    def initUI(self):
+    def init_ui(self):
         # Create central widget
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
@@ -101,7 +101,7 @@ class QuizWindow(QMainWindow):
             score = self.student.score
             level = self.student.get_level()
             # TODO log to database
-            # ...
+            self.student.modify_wrong_question_to_db(self.question_label.text(), self.correct_answer, InitializeInfo.student_db, -1)
             QMessageBox.information(self, "Nice", f"Good job, your score is {score} now! (level: {level})")
         else:
             decrease_score = InitializeInfo.wrong_answer_deduct

@@ -18,7 +18,7 @@ class LoginWindow(QMainWindow):
         
     def init_ui(self):
         self.setWindowTitle('Login System')
-        self.setFixedSize(400, 500)
+        self.setFixedSize(400, 800)
         self.setStyleSheet("""
             QMainWindow {
                 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
@@ -50,12 +50,14 @@ class LoginWindow(QMainWindow):
         
         # Login frame
         login_frame = QFrame()
-        login_frame.setFixedSize(320, 350)
+        login_frame.setMinimumSize(320, 500)
+        login_frame.setMaximumSize(320, 500)
         login_frame.setStyleSheet("""
             QFrame {
                 background: white;
                 border-radius: 15px;
                 padding: 20px;
+                height: 600px;
             }
         """)
         
@@ -178,7 +180,7 @@ class LoginWindow(QMainWindow):
         """)
         
         # Forgot password
-        forgot_password = QLabel('<a href="#" style="color: #667eea; text-decoration: none;">Forgot password?</a>')
+        forgot_password = QLabel('<a href="#" style="color: #667eea; text-decoration: none; margin: 10px">Forgot password?</a>')
         forgot_password.setAlignment(Qt.AlignCenter)
         forgot_password.setOpenExternalLinks(False)
         

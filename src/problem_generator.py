@@ -26,7 +26,7 @@ class ProblemGenerator:
         elif problem_type == "polynomial":
             return self._generate_polynomial_problem(level)
         elif problem_type == "algebra":
-            return self._generate_algebra_problem(level)
+            return self._generate_algebra_problem()
         elif problem_type == "calculus":
             return self._generate_calculus_problem(level)
         else:
@@ -151,27 +151,67 @@ class ProblemGenerator:
         
         return problem, answer
     
-    def _generate_algebra_problem(self, level: int) -> Tuple[str, str]:
+    def _generate_algebra_problem(self) -> Tuple[str, str]:
         """Generate algebra word problems"""
         problems = [
-            # Level 1-3 problems
-            ("If x + 5 = 12, what is x?", "7"),
-            ("A number multiplied by 3 is 15. What is the number?", "5"),
-            ("The sum of two consecutive numbers is 25. What are they?", "12 and 13"),
+            ("If x - 8 = 5, what is x? (answer: number)", "13"),
+            ("A number divided by 4 is 6. What is the number? (answer: number)", "24"),
+            ("If 3x = 27, what is x? (answer: number)", "9"),
+            ("Solve for y: y + 12 = 20 (answer: number)", "8"),
+            ("Solve: 5x - 2 = 18 (answer: number)", "4"),
+            ("If 4(x - 1) = 16, what is x? (answer: number)", "5"),
+            ("Solve: (x/3) = 9 (answer: number)", "27"),
             
-            # Level 4-6 problems
-            ("Solve: 2(x + 3) = 16", "5"),
-            ("A rectangle has length 2x and width x. If area is 50, find x.", "5"),
-            ("The sum of three consecutive even numbers is 48. Find them.", "14, 16, 18"),
+            ("The sum of two consecutive numbers is 33. What are they? (answer: X and Y)", "16 and 17"),
+            ("The sum of three consecutive integers is 72. Find them. (answer: X, Y, Z)", "23, 24, 25"),
+            ("The sum of three consecutive odd numbers is 57. What are they? (answer: X, Y, Z)", "17, 19, 21"),
+            ("Find two consecutive even numbers whose sum is 86. (answer: X and Y)", "42 and 44"),
             
-            # Level 7-10 problems
-            ("A train travels 300 km. If speed was 10 km/h faster, it would take 1 hour less. Find original speed.", "50 km/h"),
-            ("Solve the system: x + y = 10, 2x - y = 5", "x=5, y=5"),
-            ("A invests $5000, B invests $3000. They share $2400 profit proportionally. How much does each get?", "A: $1500, B: $900")
+            ("A square has side length x. Perimeter is 52. Find x. (answer: number)", "13"),
+            ("A rectangle's length is 5 and width is x. Perimeter is 22. Find x. (answer: number)", "6"),
+            ("A triangle has base 10 and height x. Area is 35. Find x. (answer: number)", "7"),
+            ("A cube has volume 64 cubic cm. Side length? (answer: X cm)", "4 cm"),
+            
+            ("John is twice as old as Jane. Sum of ages is 36. How old is Jane? (answer: number)", "12"),
+            ("The sum of ages of mother and daughter is 50. In 5 years, mother will be 3 times as old. Daughter's age now? (answer: number)", "10"),
+            
+            ("A car travels 240 km in 4 hours. What is its speed? (answer: XX km/h)", "60 km/h"),
+            ("A train travels 420 km in 3 hours. Average speed? (answer: XXX km/h)", "140 km/h"),
+            ("Bike at 15 km/h for 2 hours. Distance traveled? (answer: XX km)", "30 km"),
+            ("Plane flies 1500 miles at 500 mph. How long? (answer: X hours)", "3 hours"),
+            ("Two cars: one north at 60 km/h, one east at 80 km/h. Distance apart after 1 hour? (answer: XXX km)", "100 km"),
+            
+            ("Solve the system: x + y = 15, x - y = 3 (answer: x=X, y=Y)", "x=9, y=6"),
+            ("Solve: 2x + y = 11, 3x - y = 9 (answer: x=X, y=Y)", "x=4, y=3"),
+            ("The sum of two numbers is 20, difference is 8. What are they? (answer: X and Y)", "14 and 6"),
+            
+            ("Tickets: $5 children, $12 adults. 100 tickets sold for $790. Children attended? (answer: XX children)", "70 children"),
+            ("Ratio boys to girls is 3:2. 15 boys. How many girls? (answer: XX girls)", "10 girls"),
+            ("5 pencils cost $1.50. Cost of 12 pencils? (answer: $X.XX)", "$3.60"),
+            ("Shirt costs $40 after 20% discount. Original price? (answer: $XX)", "$50"),
+            ("What is 25% of 200? (answer: number)", "50"),
+            ("Number increased by 20% becomes 180. Original number? (answer: number)", "150"),
+            
+            ("A invests $6000, B invests $4000. Share $2000 profit. A's share? (answer: $XXXX)", "$1200"),
+            ("A, B, C invest $2000, $3000, $5000. Share $5000 profit. How much more does C get than A? (answer: $XXXX)", "$1500"),
+            
+            ("Pipe A fills tank in 3 hours, Pipe B in 6 hours. How long with both? (answer: X hours)", "2 hours"),
+            ("Worker A: 8 hours, Worker B: 12 hours. How long together? (answer: X.X hours)", "4.8 hours"),
+            ("4 machines do job in 6 hours. How long for 6 machines? (answer: X hours)", "4 hours"),
+            
+            ("Product of two consecutive integers is 132. What are they? (answer: X and Y)", "11 and 12"),
+            ("Rectangle length is 3 more than width. Area is 40. Dimensions? (answer: X and Y)", "8 and 5"),
+            ("A number squared is 81. What is the number? (answer: X or -X)", "9 or -9"),
+            ("Square of a number minus the number is 42. What is the number? (answer: X or -X)", "7 or -6"),
+            ("Right triangle: hypotenuse 10 cm, one leg 6 cm. Other leg? (answer: X cm)", "8 cm"),
+            
+            ("Train travels 300 km. If speed was 10 km/h faster, it would take 1 hour less. Original speed? (answer: XX km/h)", "50 km/h"),
+            ("Solve the system: x + y = 10, 2x - y = 5 (answer: x=X, y=Y)", "x=5, y=5"),
+            ("A invests $5000, B invests $3000. Share $2400 profit. How much each? (answer: A: $XXXX, B: $XXXX)", "A: $1500, B: $900")
         ]
-        
-        # Select problem based on level
-        index = min(level - 1, len(problems) - 1)
+        # Select problem based on random number
+        index = random.randint(0, len(problems) - 1)            
+
         return problems[index]
     
     def _generate_calculus_problem(self, level: int) -> Tuple[str, str]:
