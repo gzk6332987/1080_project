@@ -139,13 +139,15 @@ class QuizWindow(QMainWindow):
         else:
             # get from database if have, if not, still generate normal
             (id, question, answer) = self.student.generate_quiz_from_db(InitializeInfo.student_db)
+            
+        (answer, is_rounded) = self.check_round(answer)
         
-        self.update(question, answer)
+        self.update(question, answer, is_rounded)
         
-    def update(self, quesion: str, answer: str):
+    def update(self, question: str, answer: str, is_rounded: bool):
         self.answer_input.setText("")  # empty the answer input field
         self.correct_answer = answer
-        self.question_label.setText(quesion)
+        self.question_label.setText(question + "(Round to 2 decimal place)") if is_rounded else self.question_label.setText(question)
         # also refresh status in case level/score changed
         self.refresh_status()
 
@@ -162,6 +164,40 @@ class QuizWindow(QMainWindow):
         except Exception:
             level = 0
         self.score_level_label.setText(f"Score: {score} | Level: {level}")
+    
+    def check_round(self, number: str) -> (str, bool):
+        """
+        Round a float number only if it has more than 2 decimal places
+
+        Args:
+            number (str): The float number as string
+
+        Returns:
+            str: The original number or rounded number
+        """
+        try:
+            # Convert to float first
+            num_float = float(number)
+            
+            # Check if it's an integer (no decimal part)
+            if num_float.is_integer():
+                return (str(int(num_float)), False)
+            
+            # Convert to string to check decimal places
+            num_str = str(num_float)
+            
+            # Find the decimal point and check digits after it
+            if '.' in num_str:
+                integer_part, decimal_part = num_str.split('.')
+                # If 2 or fewer decimal places, return original
+                if len(decimal_part) <= 2:
+                    return (num_str, False)
+            
+            # Only round if more than 2 decimal places
+            return (f"{num_float:.2f}", True)
+            
+        except (ValueError, TypeError):
+            return (number, False)
 
 def answer_checker(answer, correct) -> bool:
     return str(answer) == str(correct)

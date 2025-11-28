@@ -226,16 +226,16 @@ class ProblemGenerator:
         elif level <= 6:
             # More complex derivatives
             problems = [
-                ("Find derivative of x³ - 2x² + 5x - 1", "3x² - 4x + 5"),
+                ("Find derivative of x^3-2x^2+5x-1", "3x^2-4x+5"),
                 ("Find derivative of e^x", "e^x"),
                 ("Find derivative of ln(x)", "1/x")
             ]
         else:
             # Integrals and advanced calculus
             problems = [
-                ("Find integral of 2x dx", "x² + C"),
-                ("Find integral of 3x² dx", "x³ + C"),
-                ("Find derivative of x·sin(x)", "sin(x) + x·cos(x)")
+                ("Find integral of 2x dx", "x^2+C"),
+                ("Find integral of 3x² dx", "x^3+C"),
+                ("Find derivative of x·sin(x), use *", "sin(x)+x*cos(x)")
             ]
         
         return random.choice(problems)
