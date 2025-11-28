@@ -3,6 +3,10 @@ chcp 65001 >nul
 
 cd /d "%~dp0"
 
+echo -e "\033[32We suggest you run script/pull_latest.sh to update project(not force), in case of some critical problems were fixed\033[0m"
+
+timeout /t 1 /nobreak >nul
+
 echo Activating virtual environment...
 
 python -m pip install virtualenv
@@ -19,8 +23,6 @@ if errorlevel 1 (
 )
 
 echo Virtual environment activated successfully!
-
-timeout /t 1 /nobreak >nul
 
 :: Now run your Python script
 python src\main.py

@@ -2,6 +2,10 @@
 
 cd "$(dirname "$0")"
 
+echo -e "\033[32We suggest you run script/pull_latest.sh to update project(not force), in case of some critical problems were fixed\033[0m"
+
+sleep 1
+
 echo -e "\033[32mActivating virtual environment...\033[0m"
 
 python3 -m pip install virtualenv
