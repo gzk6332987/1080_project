@@ -37,6 +37,9 @@ We use `config.toml` file set some basic setting, in python code, we use toml li
 ### Mistake Question
 We use sqlite to log students failed problems, when student failed to answer same mistake question, `mistake_count` (a variable in database) will be added, when student successfully answer the correct answer, `mistake_count` will be deducted, and the program will show the same problem for several times until `mistake_count` reduce to zero
 
+### Database
+We use sqlite3 to store student information and mistake question information. In Python side, we use `sqlite3` module to 
+
 ### GUI
 We use PyQt5 as our program GUI engine, we use PyQt Designer app to design the GUI, use PyQt5 `.connect()` method connect GUI behavior and logic process. 
 
@@ -51,7 +54,7 @@ You can access github website *https://github.com/gzk6332987/1080_project* to re
 
 You can use `git log --oneline --graph --all` show each commit and progress (:
 
-You can use `git tag` show each version of our project (If you want, you can try each version, but not all success due to database structure problem) (:
+You can use `git tag` show each version of our project (If you want, you can try each version, but not all success due to database structure problem and other problems) (:
 
 ### Additional Information: Open Source License
 
