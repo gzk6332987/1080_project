@@ -1,6 +1,8 @@
 @echo off
 chcp 65001 >nul
 
+cd /d "%~dp0"
+
 echo Activating virtual environment...
 
 python -m pip install virtualenv
