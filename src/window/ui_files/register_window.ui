@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>419</width>
+    <height>361</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>160</y>
+      <x>30</x>
+      <y>60</y>
       <width>331</width>
       <height>211</height>
      </rect>
@@ -27,7 +27,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="styleSheet">
-        <string notr="true">color: red; font-weight: bold; font-family: &quot;Times New Roman&quot;;</string>
+        <string notr="true">color: red; font-weight: bold; font-family: &quot;Times New Roman&quot;; font-size: xxx-large;</string>
        </property>
        <property name="text">
         <string>Register Form</string>
@@ -54,7 +54,21 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QLineEdit" name="username">
+       <property name="placeholderText">
+        <string>Please enter your username</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="password">
+       <property name="placeholderText">
+        <string>Please enter your password</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="regButton">
        <property name="text">
         <string>Register</string>
        </property>
@@ -68,7 +82,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>419</width>
      <height>24</height>
     </rect>
    </property>

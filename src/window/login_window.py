@@ -11,6 +11,7 @@ import hashlib
 
 class LoginWindow(QMainWindow):
     login_success = pyqtSignal(Student)  # Signal emitted on successful login
+    require_register = pyqtSignal()
     
     def __init__(self, ):
         super().__init__()
@@ -180,7 +181,7 @@ class LoginWindow(QMainWindow):
         """)
         
         # Forgot password
-        forgot_password = QLabel('<a href="#" style="color: #667eea; text-decoration: none; margin: 10px">Forgot password?</a>')
+        forgot_password = QLabel('<a href="#" style="color: #667eea; text-decoration: none; margin: 10px">Do not have an account?</a>')
         forgot_password.setAlignment(Qt.AlignCenter)
         forgot_password.setOpenExternalLinks(False)
         
@@ -196,7 +197,7 @@ class LoginWindow(QMainWindow):
         
         # Connect signals
         self.login_button.clicked.connect(self.attempt_login)
-        forgot_password.linkActivated.connect(self.forgot_password)
+        forgot_password.linkActivated.connect(self.create_account)
         self.username_input.returnPressed.connect(self.attempt_login)
         self.password_input.returnPressed.connect(self.attempt_login)
         
@@ -246,9 +247,9 @@ class LoginWindow(QMainWindow):
         """Hash password for storage/verification"""
         return hashlib.sha256(password.encode()).hexdigest()
     
-    def forgot_password(self):
-        """Handle forgot password functionality"""
-        self.show_message('Info', 'Please contact system administrator to reset your password.', QMessageBox.Information)
+    def create_account(self):
+        """Jump into account creating page"""
+        self.require_register.emit()
     
     def show_message(self, title: str, message: str, icon=QMessageBox.Warning):
         """Show message dialog"""

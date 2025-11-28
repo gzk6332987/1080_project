@@ -119,9 +119,9 @@ class Student:
             result = random.choices(history_questions, probability_weights)[0]
         except IndexError:
             # because no question in db, get question from generator
-            return self.generate_quiz_from_level()
+            return (-1, self.generate_quiz_from_level())
         except ValueError:
-            return self.generate_quiz_from_level()
+            return (-1, self.generate_quiz_from_level())
         return (result[0], result[1], result[2])
         
     def insert_question_to_db(self, database: DatabaseManager, question: str, answer: int | float| str):

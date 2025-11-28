@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd "$(dirname "$0")"
+
 echo -e "\033[32mActivating virtual environment...\033[0m"
 
 python3 -m pip install virtualenv

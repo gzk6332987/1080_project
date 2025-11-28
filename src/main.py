@@ -7,7 +7,7 @@ import sys
 
 
 def main():
-    # Initalize database connection
+    # Initialize database connection
     try:
         load_config()
         

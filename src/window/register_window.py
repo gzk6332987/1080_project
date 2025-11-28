@@ -1,18 +1,38 @@
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QLineEdit, QApplication
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QLineEdit, QApplication, QMessageBox
 from PyQt5.uic import loadUi
 import sys
 
+from database import DatabaseManager
+import hashlib
+from window.login_window import LoginWindow
+from initialize import InitializeInfo
 
 class RegisterWindow(QMainWindow):
+    student_db = None
+    
     def __init__(self):
         super().__init__()
         loadUi("src/window/ui_files/register_window.ui", self)
+        self.student_db = InitializeInfo.student_db
+        self.regButton.clicked.connect(self.create_user)
         
-        self.pushButton.clicked.connect(self.say)
-            
-    def say(self):
-        print("Hello")
-    
+    def create_user(self):
+        # get input content
+        username = self.username.text().strip()
+        password = self.password.text().strip()
+        if username == "" or password == "":
+            QMessageBox(self, "NULL username or password is not allowed!")
+            return
+        # TODO check whether username exist
+        
+        self.student_db.insert_record("students", ["username", "password", "score"], [username, self.hash_password(password).hexdigest(), InitializeInfo.default_score])
+        # redirect to login window
+        self.close()
+        
+        
+    def hash_password(self, raw_password: str) -> str:
+        return hashlib.sha256(raw_password.encode())
+        
     # def init_ui(self):
     #     central_widget = QWidget()
     #     self.setCentralWidget(central_widget)
